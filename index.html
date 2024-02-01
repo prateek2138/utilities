@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Input Form</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f2f2f2; /* Background color for the entire page */
+            margin: 10px;
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            background-color: #fff; /* Form background color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            resize: vertical;
+            border-radius: 5px;
+
+        }
+
+        button {
+            background-color: #4caf50; /* Button background color */
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker color on hover */
+        }
+
+        .result-block {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: auto;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .result-block pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<form id="stringForm">
+    <!-- Input field for multiline strings -->
+    <label for="multilineStrings">Enter Strings (one per line):</label>
+    <textarea id="multilineStrings" name="multilineStrings" rows="5" cols="50"></textarea>
+
+    <button type="button" onclick="submitForm()">Submit</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+    async function submitForm() {
+        // Collect input value from the textarea
+        const multilineStrings = document.getElementById('multilineStrings').value;
+
+        // Split multiline input into an array of strings
+        const lines = multilineStrings.split('\n');
+        const strings = lines.map(str => `'${str.trim()}'`);
+
+        // Create the CSV response
+        const csv = strings.join(', ');
+
+        // Create a new result block
+        const resultBlock = document.createElement('div');
+        resultBlock.className = 'result-block';
+        resultBlock.innerHTML = `<strong>CSV:</strong> <pre>${csv}</pre>`;
+
+        // Create a copy button
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.innerText = 'Copy';
+        copyButton.addEventListener('click', () => copyToClipboard(csv));
+
+        // Append the copy button to the result block
+        resultBlock.appendChild(copyButton);
+
+        // Append the result block to the result container
+        document.getElementById('result').appendChild(resultBlock);
+    }
+
+    function copyToClipboard(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+</script>
+</body>
+</html>
