@@ -11,27 +11,27 @@
             align-items: center;
             height: 100vh;
             background-color: #f2f2f2; /* Background color for the entire page */
-            margin: 10px;
+            margin: 0;
             font-family: Arial, sans-serif;
         }
 
-        form {
-            background-color: #fff; /* Form background color */
+        .container {
+            background-color: #fff; /* Container background color */
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 500px;
             width: 100%;
             box-sizing: border-box;
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         textarea {
             width: 100%;
             margin-bottom: 10px;
             resize: vertical;
-            border-radius: 5px;
-
         }
 
         button {
@@ -49,6 +49,8 @@
         }
 
         .result-block {
+            margin-top: 20px;
+            font-size: 16px;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -57,7 +59,6 @@
             width: 100%;
             box-sizing: border-box;
             overflow: auto;
-            margin-bottom: 20px;
             position: relative;
         }
 
@@ -77,18 +78,32 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        .copied-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: deepskyblue;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
     </style>
 </head>
 <body>
-<form id="stringForm">
+<div class="container">
     <!-- Input field for multiline strings -->
     <label for="multilineStrings">Enter Strings (one per line):</label>
     <textarea id="multilineStrings" name="multilineStrings" rows="5" cols="50"></textarea>
 
     <button type="button" onclick="submitForm()">Submit</button>
-</form>
 
-<div id="result"></div>
+    <div class="result-block" id="result"> <lable> Output </lable> </div>
+
+    <div class="copied-message" id="copiedMessage">Copied!</div>
+</div>
 
 <script>
     async function submitForm() {
@@ -116,8 +131,25 @@
         // Append the copy button to the result block
         resultBlock.appendChild(copyButton);
 
+        // Clear the existing content of the result container
+        const resultContainer = document.getElementById('result');
+        resultContainer.innerHTML = '';
+
         // Append the result block to the result container
-        document.getElementById('result').appendChild(resultBlock);
+        resultContainer.appendChild(resultBlock);
+
+        // Hide the "Copied!" message
+        document.getElementById('copiedMessage').style.display = 'none';
+
+        // Here you can add logic to send the CSV data to your server or perform other actions
+        // For example, you can use fetch to send the data to a server endpoint.
+        // const response = await fetch('/your-server-endpoint', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ strings }),
+        // });
     }
 
     function copyToClipboard(text) {
@@ -127,6 +159,15 @@
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
+
+        // Show the "Copied!" message
+        const copiedMessage = document.getElementById('copiedMessage');
+        copiedMessage.style.display = 'block';
+
+        // Hide the message after a short delay
+        setTimeout(() => {
+            copiedMessage.style.display = 'none';
+        }, 2000);
     }
 </script>
 </body>
