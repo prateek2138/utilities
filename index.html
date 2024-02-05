@@ -90,17 +90,46 @@
             border-radius: 4px;
             display: none;
         }
+        label {
+            background-color: skyblue;
+            margin: 2px;
+            width: 100%;
+            color: black;
+            padding: 5px;
+            border-radius: 4px;
+            box-sizing: border-box;
+            overflow: auto;
+            position: relative;
+            text-align: center;
+        }
+        .csvType {
+            background-color: skyblue;
+            margin: 2px;
+            width: 100%;
+            color: black;
+            padding: 5px;
+            border-radius: 4px;
+            box-sizing: border-box;
+            overflow: auto;
+            position: relative;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- Input field for multiline strings -->
+    <label for="csvType"> Choose CSV type </label>
+        <select id="csvType" class="csvType">
+            <option value="simple" selected> Simple csv </option>
+            <option value="quoted"> Quoted csv </option>
+        </select>
+
     <label for="multilineStrings">Enter Strings (one per line):</label>
     <textarea id="multilineStrings" name="multilineStrings" rows="5" cols="50"></textarea>
 
     <button type="button" onclick="submitForm()">Submit</button>
 
-    <div class="result-block" id="result"> <lable> Output </lable> </div>
+    <div class="result-block" id="result"> Output </div>
 
     <div class="copied-message" id="copiedMessage">Copied!</div>
 </div>
@@ -112,10 +141,19 @@
 
         // Split multiline input into an array of strings
         const lines = multilineStrings.split('\n');
-        const strings = lines.map(str => `'${str.trim()}'`);
+        const strings = lines.map(str => str.trim());
 
-        // Create the CSV response
-        const csv = strings.join(', ');
+        // Get the selected CSV type
+        const selectedCsvType = document.getElementById('csvType').value;
+        console.log(selectedCsvType);
+
+        // Create the CSV response based on the selected type
+        let csv;
+        if (selectedCsvType === 'simple') {
+            csv = strings.join(', ');
+        } else if (selectedCsvType === 'quoted') {
+            csv = strings.map(str => `'${str}'`).join(', ');
+        }
 
         // Create a new result block
         const resultBlock = document.createElement('div');
