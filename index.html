@@ -9,7 +9,7 @@
             height: 100vh;
             background-color: aliceblue;
             background-image: radial-gradient(lightcyan, lightgrey);
-            margin: 0;
+            margin: 10px;
         }
 
         .container {
@@ -185,7 +185,7 @@
 
         const resultBlock = document.getElementById('result');
         resultBlock.innerHTML = `<strong>CSV:</strong> <pre>${csv}</pre>`;
-        
+
         const copyButton = document.getElementById('copy');
         copyButton.addEventListener('click', () => copyToClipboard(csv));
     }
