@@ -6,32 +6,34 @@
     <title>String Input Form</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
-            background-color: #f2f2f2; /* Background color for the entire page */
+            background-color: aliceblue;
+            background-image: radial-gradient(lightcyan, lightgrey);
             margin: 0;
-            font-family: Arial, sans-serif;
         }
 
         .container {
-            background-color: #fff; /* Container background color */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
+            width: 400px; /* Set your desired width */
+            height: 550px; /* Set your desired height */
+            background-color: lightgray;
+            text-align: center;
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         textarea {
             width: 100%;
-            margin-bottom: 10px;
+            height: 30%;
+            border-radius: 5px;
+            margin: auto;
             resize: vertical;
+            font-family: Georgia;
         }
 
         button {
@@ -49,7 +51,7 @@
         }
 
         .result-block {
-            margin-top: 20px;
+            margin-top: 10px;
             font-size: 16px;
             background-color: #fff;
             padding: 20px;
@@ -58,9 +60,13 @@
             max-width: 500px;
             width: 100%;
             box-sizing: border-box;
-            overflow: auto;
             position: relative;
+            height: 140px; /* Set your desired fixed height */
+            overflow-y: auto; /* Vertical scrollbar will appear if content exceeds the height */
+            white-space: pre-wrap; /* Allow the content to wrap and break */
         }
+
+
 
         .result-block pre {
             white-space: pre-wrap;
@@ -68,27 +74,23 @@
         }
 
         .copy-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #3498db;
+            background-color: #4caf50; /* Button background color */
             color: white;
             border: none;
-            padding: 5px;
+            padding: 10px;
+            margin-top: 5px;
             border-radius: 4px;
             cursor: pointer;
         }
 
         .copied-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: deepskyblue;
+            position: relative;
+            background-color: skyblue;
             color: white;
             padding: 10px;
             border-radius: 4px;
             display: none;
+            margin-top: 5px;
         }
         label {
             background-color: skyblue;
@@ -114,22 +116,48 @@
             position: relative;
             text-align: center;
         }
+        .inputstring {
+            background-color: skyblue;
+            text-align: center;
+            font-family: cursive;
+            margin: 2px;
+            width: 100%;
+            color: black;
+            padding: 5px;
+            border-radius: 4px;
+            box-sizing: border-box;
+            overflow: auto;
+            position: relative;
+        }
+        .heading {
+            background-color: skyblue;
+            text-align: center;
+            font-family: cursive;
+            color: black;
+            border-radius: 4px;
+            overflow: auto;
+        }
     </style>
 </head>
 <body>
+<div class="heading">
+    <h2> Utilities  </h2>
+</div>
 <div class="container">
-    <label for="csvType"> Choose CSV type </label>
         <select id="csvType" class="csvType">
-            <option value="simple" selected> Simple csv </option>
+            <option selected disabled> Choose CSV type </option>
+            <option value="simple" > Simple csv </option>
             <option value="quoted"> Quoted csv </option>
         </select>
 
-    <label for="multilineStrings">Enter Strings (one per line):</label>
+    <div class="inputstring">Enter Strings </div>
     <textarea id="multilineStrings" name="multilineStrings" rows="5" cols="50"></textarea>
 
     <button type="button" onclick="submitForm()">Submit</button>
 
     <div class="result-block" id="result"> Output </div>
+<!--    <button  onclick="copyToClipboard()">Copy</button>-->
+    <div id="copy" class="copy-button">Copy</div>
 
     <div class="copied-message" id="copiedMessage">Copied!</div>
 </div>
@@ -155,39 +183,11 @@
             csv = strings.map(str => `'${str}'`).join(', ');
         }
 
-        // Create a new result block
-        const resultBlock = document.createElement('div');
-        resultBlock.className = 'result-block';
+        const resultBlock = document.getElementById('result');
         resultBlock.innerHTML = `<strong>CSV:</strong> <pre>${csv}</pre>`;
-
-        // Create a copy button
-        const copyButton = document.createElement('button');
-        copyButton.className = 'copy-button';
-        copyButton.innerText = 'Copy';
+        
+        const copyButton = document.getElementById('copy');
         copyButton.addEventListener('click', () => copyToClipboard(csv));
-
-        // Append the copy button to the result block
-        resultBlock.appendChild(copyButton);
-
-        // Clear the existing content of the result container
-        const resultContainer = document.getElementById('result');
-        resultContainer.innerHTML = '';
-
-        // Append the result block to the result container
-        resultContainer.appendChild(resultBlock);
-
-        // Hide the "Copied!" message
-        document.getElementById('copiedMessage').style.display = 'none';
-
-        // Here you can add logic to send the CSV data to your server or perform other actions
-        // For example, you can use fetch to send the data to a server endpoint.
-        // const response = await fetch('/your-server-endpoint', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ strings }),
-        // });
     }
 
     function copyToClipboard(text) {
@@ -205,7 +205,7 @@
         // Hide the message after a short delay
         setTimeout(() => {
             copiedMessage.style.display = 'none';
-        }, 2000);
+        }, 3000);
     }
 </script>
 </body>
